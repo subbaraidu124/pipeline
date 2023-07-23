@@ -1,0 +1,45 @@
+name: aws login subbaraidu
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 1: Set up AWS CLI
+      - name: Configure AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ${{ secrets.AWS_REGION }}
+
+      # Step 2: Install Terraform
+      - name: Install Terraform
+        run: |
+          curl -LO "https://releases.hashicorp.com/terraform/1.0.9/terraform_1.0.9_linux_amd64.zip"
+          unzip terraform_1.0.9_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+          rm terraform_1.0.9_linux_amd64.zip
+
+      # Step 3: Run Terraform commands
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Validate Terraform configuration
+        run: terraform validate
+
+      - name: Plan Terraform changes
+        run: terraform plan 
+      - name: add apply
+        run: terraform apply
+
+      # Add more steps here, such as applying the changes or performing other actions.
+ 
+
