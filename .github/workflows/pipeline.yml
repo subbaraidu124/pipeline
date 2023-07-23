@@ -33,13 +33,13 @@ jobs:
 
       # Step 3: Run Terraform commands
       - name: Initialize Terraform
-        run: terraform init
+        run: terraform init 
 
       - name: Validate Terraform configuration
-        run: terraform validate
+        run: terraform validate 
 
       - name: Plan Terraform changes
-        run: terraform plan 
+        run: terraform plan -out=terraform.plan
       - name: add apply
         run: terraform apply
 
