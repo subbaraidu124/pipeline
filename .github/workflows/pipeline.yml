@@ -12,37 +12,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v1
+        - name: Checkout Repo
+          uses: actions/checkout@v1
 
-      # Step 1: Set up AWS CLI
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+        - name: Terraform Init
+          uses: hashicorp/terraform-github-actions/init@v0.4.0
+          env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           TF_ACTION_WORKING_DIR: 'terraform'
+           AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+           AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Step 2: Install Terraform
-      - name: Install Terraform
-        run: |
-          curl -LO "https://releases.hashicorp.com/terraform/1.0.9/terraform_1.0.9_linux_amd64.zip"
-          unzip terraform_1.0.9_linux_amd64.zip
-          sudo mv terraform /usr/local/bin/
-          rm terraform_1.0.9_linux_amd64.zip
+        - name: Terraform Validate
+          uses: hashicorp/terraform-github-actions/validate@v0.3.7
 
-      # Step 3: Run Terraform commands
-      - name: Initialize Terraform
-        run: terraform init 
+        - name: Terraform Apply
+          uses: hashicorp/terraform-github-actions/apply@v0.4.0
+          env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           TF_ACTION_WORKING_DIR: 'terraform'
+           AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+           AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Validate Terraform configuration
-        run: terraform validate 
-
-      - name: Plan Terraform changes
-        run: terraform plan -out=terraform.plan
-      - name: add apply
-        run: terraform apply
-
-      # Add more steps here, such as applying the changes or performing other actions.
+    
  
 
