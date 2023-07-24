@@ -6,6 +6,7 @@ on:
       - main
     paths: 
       - '.module/vpc.tf'
+  workflow_dispatch: 
 
 jobs:
   terraform:
