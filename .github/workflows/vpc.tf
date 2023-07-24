@@ -15,8 +15,8 @@ provider "aws" {
 }
 
 backend "s3" {
-       bucket = "[Remote_State_S3_Bucket_Name]"
-       key    = "[Remote_State_S3_Bucket_Key]"
+       bucket = "subbaraidu"
+       key    = "test"
        region = "east-us-1"
    }
 }
