@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths: 
-      - '.module/vpc.tf'
+      - '.module/*'
 
 jobs:
   terraform:
